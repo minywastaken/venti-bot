@@ -6,7 +6,12 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, Any
 import discord
 from discord.ext import commands
+import threading
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 
+# Dummy web server to satisfy Render's port check
+server = HTTPServer(('0.0.0.0', 10000), SimpleHTTPRequestHandler)
+threading.Thread(target=server.serve_forever, daemon=True).start()
 # ==================== CONFIGURATION & DATA ====================
 # Track message counts in memory (or store in your existing JSON data)
 user_message_counts={5}
