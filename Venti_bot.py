@@ -172,4 +172,4 @@ async def main():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
-    bot.run(os.eviron.get("DISCORD_TOKEN"))
+    bot.run(os.environ.get("DISCORD_TOKEN"))
