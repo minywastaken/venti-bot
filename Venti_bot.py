@@ -1,5 +1,6 @@
 #is ts supposed to be a discord bot
 import json
+import asyncio
 import os
 import random
 from datetime import datetime, timedelta, timezone
@@ -9,11 +10,10 @@ from discord.ext import commands
 import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
-# Dummy web server to satisfy Render's port check
+
 server = HTTPServer(('0.0.0.0', 10000), SimpleHTTPRequestHandler)
 threading.Thread(target=server.serve_forever, daemon=True).start()
-# ==================== CONFIGURATION & DATA ====================
-# Track message counts in memory (or store in your existing JSON data)
+
 user_message_counts={5}
 
 DATA_FILE = "user_data.json"
@@ -57,7 +57,7 @@ WINE_BOTTLES = [
     },
 ]
 
-# ==================== DATA HELPER FUNCTIONS ====================
+
 def load_data() -> Dict[str, Dict[str, Any]]:
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -81,7 +81,7 @@ def get_random_wine() -> Dict[str, Any]:
             return wine
     return WINE_BOTTLES[0]
 
-# ==================== COGS / COMMANDS ====================
+
 
 class EconomyCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -117,11 +117,10 @@ class EconomyCog(commands.Cog):
                 )
                 return
 
-        # Roll reward
+    
         selected_wine = get_random_wine()
         primos_won = random.randint(selected_wine["min_primos"], selected_wine["max_primos"])
 
-        # Update profile
         user_profile["primos"] += primos_won
         user_profile["last_daily"] = now.isoformat()
         save_data(data)
@@ -143,7 +142,6 @@ class EconomyCog(commands.Cog):
         await ctx.send(embed=embed)
 
 
-# ==================== BOT SETUP & INITIALIZATION ====================
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -170,6 +168,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    import asyncio
+    
     asyncio.run(main())
     bot.run(os.environ.get("DISCORD_TOKEN"))
