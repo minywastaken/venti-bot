@@ -1,4 +1,4 @@
-
+#is ts supposed to be a discord bot
 import json
 import os
 import random
